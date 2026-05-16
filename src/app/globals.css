@@ -8,6 +8,10 @@
   --font-display: var(--font-inter), sans-serif;
   --font-mono: var(--font-roboto-mono), monospace;
   
+  --font-size-h1: clamp(4rem, 12vw, 12rem);
+  --line-height-h1: 0.85;
+  --letter-spacing-h1: -0.03em;
+  
   --breakpoint-cinema: 21 / 9;
 }
 
@@ -29,13 +33,20 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-/* Custom Utilities for cinematic feel */
-@utility text-h1 {
-  font-size: clamp(3.5rem, 10vw, 10rem);
-  line-height: 0.85;
-  letter-spacing: -0.03em;
-  font-weight: 700;
+/* Custom Class for cinematic feel */
+.text-h1 {
+  font-size: var(--font-size-h1);
+  line-height: var(--line-height-h1);
+  letter-spacing: var(--letter-spacing-h1);
+  font-weight: 900;
   text-transform: uppercase;
+}
+
+.char {
+  font-size: inherit;
+  line-height: inherit;
+  display: inline-block;
+  will-change: transform;
 }
 
 @utility text-micro {

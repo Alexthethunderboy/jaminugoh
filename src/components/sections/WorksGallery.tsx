@@ -72,17 +72,17 @@ export default function WorksGallery() {
         {PROJECTS.map((project) => (
           <div 
             key={project.id}
-            className="project-card relative w-screen h-full flex items-center justify-center p-8 md:p-24 group"
+            className="project-card relative w-screen h-full flex items-center justify-center p-4 md:p-12 group"
             onMouseEnter={() => setCursorType('view')}
             onMouseLeave={() => setCursorType('default')}
           >
             {/* Project Number (Micro) */}
-            <div className="absolute top-12 left-12 md:top-24 md:left-24">
+            <div className="absolute top-8 left-8 md:top-12 md:left-12">
               <Metadata className="text-silver/40">0{project.id} / Project</Metadata>
             </div>
 
             {/* Content Wrapper */}
-            <div className="relative w-full max-w-6xl h-full flex flex-col justify-center gap-8 md:gap-16">
+            <div className="relative w-full max-w-5xl h-full flex flex-col justify-center gap-6 md:gap-12">
               
               {/* Image/Video Container */}
               <div className="relative w-full aspect-[4/5] md:aspect-video overflow-hidden bg-charcoal rounded-sm">

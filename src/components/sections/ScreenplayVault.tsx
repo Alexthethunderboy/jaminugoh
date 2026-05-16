@@ -20,12 +20,12 @@ const SCRIPTS = [
 
 export default function ScreenplayVault() {
   return (
-    <section className="relative min-h-screen bg-[#080808] py-24 px-8 md:px-24">
+    <section className="relative min-h-screen bg-[#080808] py-16 px-8 md:px-24">
       <div className="max-w-7xl mx-auto">
-        <Metadata className="mb-12">02 / The Writing</Metadata>
-        <h2 className="text-h1 mb-24 mix-blend-difference text-silver">Screenplay<br/>Vault</h2>
+        <Metadata className="mb-8">02 / The Writing</Metadata>
+        <h2 className="text-h1 mb-16 mix-blend-difference text-silver">Screenplay<br/>Vault</h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {SCRIPTS.map((script, i) => (
             <div key={i} className="group relative border-t border-silver/10 pt-12 hover:border-silver/40 transition-colors">
               <div className="flex justify-between items-start mb-8">

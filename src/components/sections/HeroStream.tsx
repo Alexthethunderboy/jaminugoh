@@ -44,6 +44,24 @@ export default function HeroStream() {
       yoyo: true,
       repeat: -1
     });
+    // 5. Parallax Mouse Effect
+    const handleMouseParallax = (e: MouseEvent) => {
+      const { clientX, clientY } = e;
+      const xPos = (clientX / window.innerWidth - 0.5) * 30;
+      const yPos = (clientY / window.innerHeight - 0.5) * 30;
+
+      gsap.to(titleRef.current, {
+        x: xPos,
+        y: yPos,
+        rotateY: xPos * 0.1,
+        rotateX: -yPos * 0.1,
+        duration: 1,
+        ease: "power2.out"
+      });
+    };
+
+    window.addEventListener('mousemove', handleMouseParallax);
+    return () => window.removeEventListener('mousemove', handleMouseParallax);
   }, { scope: containerRef });
 
   const splitText = (text: string) => {
@@ -79,12 +97,16 @@ export default function HeroStream() {
       </div>
 
       {/* Foreground Content */}
-      <div className="relative z-20 flex flex-col items-center pointer-events-none text-center px-4">
-        <H1 ref={titleRef} className="mix-blend-difference text-silver" style={{ perspective: '800px' }}>
+      <div className="relative z-20 flex flex-col items-center pointer-events-none text-center px-4 w-full">
+        <H1 
+          ref={titleRef} 
+          className="text-[12vw] mix-blend-difference text-silver drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] whitespace-nowrap" 
+          style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
+        >
           {splitText("Jamin Ugoh")}
         </H1>
         
-        <div ref={metadataRef} className="mt-8 flex flex-wrap justify-center gap-4 md:gap-8 opacity-0">
+        <div ref={metadataRef} className="mt-4 md:mt-8 flex flex-wrap justify-center gap-4 md:gap-8 opacity-0">
           <Metadata>Director</Metadata>
           <span className="hidden md:block w-[3px] h-[3px] rounded-full bg-silver/30 self-center" />
           <Metadata>Cinematographer</Metadata>

@@ -16,10 +16,10 @@ export default function SonicLab() {
   const setCursorType = useAppStore((state) => state.setCursorType);
 
   return (
-    <section className="relative min-h-screen bg-obsidian py-24 px-8 md:px-24">
+    <section className="relative min-h-screen bg-obsidian py-16 px-8 md:px-24">
       <div className="max-w-7xl mx-auto h-full flex flex-col justify-center">
-        <Metadata className="mb-12">03 / The Sonic Lab</Metadata>
-        <h2 className="text-h1 mb-24 text-silver">Audio<br/>Scapes</h2>
+        <Metadata className="mb-8">03 / The Sonic Lab</Metadata>
+        <h2 className="text-h1 mb-16 text-silver">Audio<br/>Scapes</h2>
         
         <div className="space-y-4">
           {TRACKS.map((track, i) => (
