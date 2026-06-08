@@ -1,16 +1,23 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useAppStore } from '@/lib/store';
 
 export default function MagneticCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const { cursorType } = useAppStore();
+  const [isReducedMotion, setIsReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsReducedMotion(mediaQuery.matches);
+  }, []);
 
   useEffect(() => {
     const cursor = cursorRef.current;
-    if (!cursor) return;
+    if (!cursor || isReducedMotion) return;
 
     const xTo = gsap.quickTo(cursor, 'x', { duration: 0.4, ease: 'power3' });
     const yTo = gsap.quickTo(cursor, 'y', { duration: 0.4, ease: 'power3' });
@@ -22,7 +29,9 @@ export default function MagneticCursor() {
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  }, [isReducedMotion]);
+
+  if (isReducedMotion) return null;
 
   return (
     <div

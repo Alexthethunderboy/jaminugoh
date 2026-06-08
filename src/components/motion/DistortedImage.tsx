@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useRef, useState, useMemo, useEffect } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -32,6 +32,7 @@ const fragmentShader = `
 
 function ImageMesh({ url, isHovered }: { url: string; isHovered: boolean }) {
   const meshRef = useRef<THREE.Mesh>(null);
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
   const texture = useLoader(THREE.TextureLoader, url);
   
   const uniforms = useMemo(() => ({
@@ -41,18 +42,21 @@ function ImageMesh({ url, isHovered }: { url: string; isHovered: boolean }) {
   }), [texture]);
 
   useFrame((state) => {
-    uniforms.uTime.value = state.clock.getElapsedTime();
-    uniforms.uHover.value = THREE.MathUtils.lerp(
-      uniforms.uHover.value,
-      isHovered ? 1 : 0,
-      0.1
-    );
+    if (materialRef.current) {
+      materialRef.current.uniforms.uTime.value = state.clock.getElapsedTime();
+      materialRef.current.uniforms.uHover.value = THREE.MathUtils.lerp(
+        materialRef.current.uniforms.uHover.value,
+        isHovered ? 1 : 0,
+        0.1
+      );
+    }
   });
 
   return (
     <mesh ref={meshRef}>
       <planeGeometry args={[1, 1]} />
       <shaderMaterial
+        ref={materialRef}
         transparent
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
@@ -64,6 +68,28 @@ function ImageMesh({ url, isHovered }: { url: string; isHovered: boolean }) {
 
 export default function DistortedImage({ url }: { url: string }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [useFallback, setUseFallback] = useState(false);
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const connection = (navigator as any).connection;
+    const saveData = connection?.saveData === true;
+    
+    if (reducedMotion || saveData) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setUseFallback(true);
+    }
+  }, []);
+
+  if (useFallback) {
+    return (
+      <div 
+        className="w-full h-full bg-cover bg-center transition-transform duration-700 hover:scale-105"
+        style={{ backgroundImage: `url(${url})` }}
+      />
+    );
+  }
 
   return (
     <div 

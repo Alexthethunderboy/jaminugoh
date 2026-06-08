@@ -5,13 +5,8 @@ import { Metadata } from '@/components/ui/typography';
 import { Play, Pause } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 
-const TRACKS = [
-  { title: "KAIROS SCORE", duration: "03:42", category: "Film Score" },
-  { title: "URBAN ECHOES", duration: "02:15", category: "Experimental" },
-  { title: "LAGOS NIGHTS", duration: "04:10", category: "Atmospheric" }
-];
-
-export default function SonicLab() {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function SonicLab({ tracks }: { tracks: any[] }) {
   const [playingTrack, setPlayingTrack] = useState<number | null>(null);
   const setCursorType = useAppStore((state) => state.setCursorType);
 
@@ -22,9 +17,9 @@ export default function SonicLab() {
         <h2 className="text-h1 mb-16 text-silver">Audio<br/>Scapes</h2>
         
         <div className="space-y-4">
-          {TRACKS.map((track, i) => (
+          {tracks.map((track, i) => (
             <div 
-              key={i}
+              key={track._id || i}
               className="group flex flex-col md:flex-row md:items-center justify-between p-6 md:p-8 border border-silver/5 hover:border-silver/20 hover:bg-white/[0.02] transition-all cursor-pointer gap-6 md:gap-0"
               onClick={() => setPlayingTrack(playingTrack === i ? null : i)}
               onMouseEnter={() => setCursorType('audio')}

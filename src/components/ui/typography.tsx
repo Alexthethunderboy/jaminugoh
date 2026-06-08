@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import React, { ReactNode, ComponentPropsWithoutRef, forwardRef } from "react";
+import React, { ComponentPropsWithoutRef, forwardRef } from "react";
 
 export const H1 = forwardRef<HTMLHeadingElement, ComponentPropsWithoutRef<"h1">>(
   ({ children, className, ...props }, ref) => {

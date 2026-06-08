@@ -5,8 +5,17 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { useAppStore } from '@/lib/store';
 import { H1, Metadata } from '@/components/ui/typography';
+import { urlForImage } from '@/sanity/lib/image';
 
-export default function HeroStream() {
+interface HeroData {
+  title: string;
+  roles: string[];
+  videoUrl?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  poster?: any;
+}
+
+export default function HeroStream({ data }: { data: HeroData }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -14,7 +23,19 @@ export default function HeroStream() {
   
   const setCursorType = useAppStore((state) => state.setCursorType);
 
+  const posterUrl = typeof data.poster === 'string' 
+    ? data.poster 
+    : data.poster ? urlForImage(data.poster)?.url() : undefined;
+
   useGSAP(() => {
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isReducedMotion) {
+      if (videoRef.current) gsap.set(videoRef.current, { scale: 1, filter: "blur(0px)", opacity: 0.6 });
+      gsap.set(".char", { y: 0, opacity: 1, rotateX: 0 });
+      if (metadataRef.current) gsap.set(metadataRef.current, { opacity: 1, y: 0 });
+      return;
+    }
+
     const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
 
     // Entry Animation
@@ -44,7 +65,8 @@ export default function HeroStream() {
       yoyo: true,
       repeat: -1
     });
-    // 5. Parallax Mouse Effect
+
+    // Parallax Mouse Effect
     const handleMouseParallax = (e: MouseEvent) => {
       const { clientX, clientY } = e;
       const xPos = (clientX / window.innerWidth - 0.5) * 30;
@@ -82,18 +104,19 @@ export default function HeroStream() {
       {/* Background Video */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/80 z-10 mix-blend-multiply pointer-events-none" />
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover origin-center opacity-0"
-          poster="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop"
-        >
-          {/* Using a high-quality sample video from a CDN for the demo */}
-          <source src="https://assets.mixkit.co/videos/preview/mixkit-cinematic-view-of-a-mountain-valley-during-sunset-34504-large.mp4" type="video/mp4" />
-        </video>
+        {data.videoUrl && (
+          <video
+            ref={videoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover origin-center opacity-0"
+            poster={posterUrl}
+          >
+            <source src={data.videoUrl} type="video/mp4" />
+          </video>
+        )}
       </div>
 
       {/* Foreground Content */}
@@ -103,15 +126,18 @@ export default function HeroStream() {
           className="text-[12vw] mix-blend-difference text-silver drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] whitespace-nowrap" 
           style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
         >
-          {splitText("Jamin Ugoh")}
+          {splitText(data.title)}
         </H1>
         
         <div ref={metadataRef} className="mt-4 md:mt-8 flex flex-wrap justify-center gap-4 md:gap-8 opacity-0">
-          <Metadata>Director</Metadata>
-          <span className="hidden md:block w-[3px] h-[3px] rounded-full bg-silver/30 self-center" />
-          <Metadata>Cinematographer</Metadata>
-          <span className="hidden md:block w-[3px] h-[3px] rounded-full bg-silver/30 self-center" />
-          <Metadata>Writer</Metadata>
+          {data.roles?.map((role, idx) => (
+            <React.Fragment key={idx}>
+              <Metadata>{role}</Metadata>
+              {idx < data.roles.length - 1 && (
+                <span className="hidden md:block w-[3px] h-[3px] rounded-full bg-silver/30 self-center" />
+              )}
+            </React.Fragment>
+          ))}
         </div>
       </div>
     </section>

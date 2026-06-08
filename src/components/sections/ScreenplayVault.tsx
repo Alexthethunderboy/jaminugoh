@@ -3,22 +3,8 @@
 import React from 'react';
 import { Metadata } from '@/components/ui/typography';
 
-const SCRIPTS = [
-  {
-    title: "KAIROS",
-    type: "Short Film",
-    logline: "In a world where time is a currency, one man risks everything to buy a single hour with his past.",
-    status: "Produced"
-  },
-  {
-    title: "MIDNIGHT IN LAGOS",
-    type: "Feature",
-    logline: "An aspiring jazz musician uncovers a high-stakes conspiracy in the heart of Lagos.",
-    status: "In Development"
-  }
-];
-
-export default function ScreenplayVault() {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function ScreenplayVault({ scripts }: { scripts: any[] }) {
   return (
     <section className="relative min-h-screen bg-[#080808] py-16 px-8 md:px-24">
       <div className="max-w-7xl mx-auto">
@@ -26,8 +12,8 @@ export default function ScreenplayVault() {
         <h2 className="text-h1 mb-16 mix-blend-difference text-silver">Screenplay<br/>Vault</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {SCRIPTS.map((script, i) => (
-            <div key={i} className="group relative border-t border-silver/10 pt-12 hover:border-silver/40 transition-colors">
+          {scripts.map((script, i) => (
+            <div key={script._id || i} className="group relative border-t border-silver/10 pt-12 hover:border-silver/40 transition-colors">
               <div className="flex justify-between items-start mb-8">
                 <Metadata>{script.type} • {script.status}</Metadata>
                 <div className="w-12 h-[1px] bg-silver/20" />

@@ -7,50 +7,19 @@ import { useGSAP } from '@gsap/react';
 import { Metadata } from '@/components/ui/typography';
 import { useAppStore } from '@/lib/store';
 import DistortedImage from '@/components/motion/DistortedImage';
+import { urlForImage } from '@/sanity/lib/image';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PROJECTS = [
-  {
-    id: 1,
-    title: "KAIROS",
-    role: "Director",
-    year: "2023",
-    video: "https://assets.mixkit.co/videos/preview/mixkit-cinematic-view-of-a-mountain-valley-during-sunset-34504-large.mp4",
-    poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1925&auto=format&fit=crop"
-  },
-  {
-    id: 2,
-    title: "ELCA TALES",
-    role: "Cinematographer",
-    year: "2022",
-    video: "https://assets.mixkit.co/videos/preview/mixkit-underwater-view-of-a-man-swimming-in-the-sea-42037-large.mp4",
-    poster: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2071&auto=format&fit=crop"
-  },
-  {
-    id: 3,
-    title: "NOIR ECHO",
-    role: "Director",
-    year: "2024",
-    video: "https://assets.mixkit.co/videos/preview/mixkit-driving-through-the-city-at-night-4240-large.mp4",
-    poster: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2070&auto=format&fit=crop"
-  },
-  {
-    id: 4,
-    title: "URBAN RHYTHM",
-    role: "Writer",
-    year: "2021",
-    video: "https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-dense-city-at-night-42484-large.mp4",
-    poster: "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?q=80&w=2070&auto=format&fit=crop"
-  }
-];
-
-export default function WorksGallery() {
-  const containerRef = useRef<HTMLDivElement>(null);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function WorksGallery({ projects }: { projects: any[] }) {
   const triggerRef = useRef<HTMLDivElement>(null);
   const setCursorType = useAppStore((state) => state.setCursorType);
 
   useGSAP(() => {
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isReducedMotion || projects.length <= 1) return;
+
     const sections = gsap.utils.toArray('.project-card');
     
     gsap.to(sections, {
@@ -64,61 +33,73 @@ export default function WorksGallery() {
         end: () => `+=${triggerRef.current?.offsetWidth}`,
       }
     });
-  }, { scope: triggerRef });
+  }, { scope: triggerRef, dependencies: [projects] });
 
   return (
     <div ref={triggerRef} className="overflow-hidden">
-      <section className="relative h-screen w-[400vw] flex bg-obsidian">
-        {PROJECTS.map((project) => (
-          <div 
-            key={project.id}
-            className="project-card relative w-screen h-full flex items-center justify-center p-4 md:p-12 group"
-            onMouseEnter={() => setCursorType('view')}
-            onMouseLeave={() => setCursorType('default')}
-          >
-            {/* Project Number (Micro) */}
-            <div className="absolute top-8 left-8 md:top-12 md:left-12">
-              <Metadata className="text-silver/40">0{project.id} / Project</Metadata>
-            </div>
+      <section 
+        className="relative h-screen flex bg-obsidian"
+        style={{ width: `${projects.length * 100}vw` }}
+      >
+        {projects.map((project, index) => {
+          const posterUrl = typeof project.poster === 'string' 
+            ? project.poster 
+            : project.poster ? urlForImage(project.poster)?.url() : '';
 
-            {/* Content Wrapper */}
-            <div className="relative w-full max-w-5xl h-full flex flex-col justify-center gap-6 md:gap-12">
-              
-              {/* Image/Video Container */}
-              <div className="relative w-full aspect-[4/5] md:aspect-video overflow-hidden bg-charcoal rounded-sm">
-                <div className="w-full h-full group-hover:opacity-0 transition-opacity duration-500">
-                  <DistortedImage url={project.poster} />
-                </div>
-                <video 
-                  autoPlay 
-                  loop 
-                  muted 
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                >
-                  <source src={project.video} type="video/mp4" />
-                </video>
+          return (
+            <div 
+              key={project._id || index}
+              className="project-card relative w-screen h-full flex items-center justify-center p-4 md:p-12 group"
+              onMouseEnter={() => setCursorType('view')}
+              onMouseLeave={() => setCursorType('default')}
+            >
+              {/* Project Number (Micro) */}
+              <div className="absolute top-8 left-8 md:top-12 md:left-12">
+                <Metadata className="text-silver/40">0{index + 1} / Project</Metadata>
               </div>
 
-              {/* Text Info */}
-              <div className="text-left flex flex-col justify-center">
-                <div className="flex justify-between items-end">
-                  <div>
-                    <Metadata className="mb-2">{project.year} • {project.role}</Metadata>
-                    <h2 className="text-[12vw] md:text-[8vw] font-display font-bold uppercase leading-[0.8] tracking-tighter text-silver">
-                      {project.title}
-                    </h2>
+              {/* Content Wrapper */}
+              <div className="relative w-full max-w-5xl h-full flex flex-col justify-center gap-6 md:gap-12">
+                
+                {/* Image/Video Container */}
+                <div className="relative w-full aspect-[4/5] md:aspect-video overflow-hidden bg-charcoal rounded-sm">
+                  <div className="w-full h-full group-hover:opacity-0 transition-opacity duration-500">
+                    {posterUrl && <DistortedImage url={posterUrl} />}
                   </div>
-                  <button className="hidden md:flex items-center gap-4 text-micro group-hover:gap-6 transition-all opacity-0 group-hover:opacity-100">
-                    <span>Explore</span>
-                    <span className="w-8 h-[1px] bg-silver/40" />
-                  </button>
+                  {project.videoUrl && (
+                    <video 
+                      autoPlay 
+                      loop 
+                      muted 
+                      playsInline
+                      preload="none"
+                      className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                    >
+                      <source src={project.videoUrl} type="video/mp4" />
+                    </video>
+                  )}
                 </div>
-              </div>
 
+                {/* Text Info */}
+                <div className="text-left flex flex-col justify-center">
+                  <div className="flex justify-between items-end">
+                    <div>
+                      <Metadata className="mb-2">{project.year} • {project.role}</Metadata>
+                      <h2 className="text-[12vw] md:text-[8vw] font-display font-bold uppercase leading-[0.8] tracking-tighter text-silver">
+                        {project.title}
+                      </h2>
+                    </div>
+                    <button className="hidden md:flex items-center gap-4 text-micro group-hover:gap-6 transition-all opacity-0 group-hover:opacity-100">
+                      <span>Explore</span>
+                      <span className="w-8 h-[1px] bg-silver/40" />
+                    </button>
+                  </div>
+                </div>
+
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </section>
     </div>
   );

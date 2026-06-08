@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Mail, Video } from 'lucide-react';
-import { Metadata } from '@/components/ui/typography';
 import { useAppStore } from '@/lib/store';
 
 // Custom SVG Icons for Brands (Lucide 1.0 removed them)
