@@ -22,8 +22,31 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://jaminugoh.com"),
   title: "Jamin Ugoh | Director • Writer • Cinematographer",
-  description: "Official portfolio of Jamin Ugoh, an award-winning Director, Writer, and Cinematographer based in the UK.",
+  description: "Official portfolio of Jamin Ugoh, a Director, Writer, and Cinematographer based in the UK.",
+  openGraph: {
+    title: "Jamin Ugoh | Director • Writer • Cinematographer",
+    description: "Official portfolio of Jamin Ugoh, a Director, Writer, and Cinematographer based in the UK.",
+    url: "/",
+    siteName: "Jamin Ugoh Studio",
+    images: [
+      {
+        url: "/icon",
+        width: 512,
+        height: 512,
+        alt: "Jamin Ugoh Logo",
+      },
+    ],
+    locale: "en_GB",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Jamin Ugoh | Director",
+    description: "Official portfolio of Jamin Ugoh, a Director, Writer, and Cinematographer based in the UK.",
+    images: ["/icon"],
+  },
 };
 
 export default async function RootLayout({

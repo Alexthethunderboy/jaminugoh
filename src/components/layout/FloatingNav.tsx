@@ -85,32 +85,32 @@ export default function FloatingNav({ data }: { data?: GlobalSettingsData }) {
   const contactEmail = data?.email ? `mailto:${data.email}` : "mailto:Benjaminugoh@gmail.com";
 
   return (
-    <nav className="fixed bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] animate-in slide-in-from-bottom-8 duration-1000 delay-500 fill-mode-both w-full max-w-[95vw] md:w-[max-content]">
-      <div className="flex items-center justify-between md:justify-center gap-0.5 md:gap-2 p-1 md:p-2 bg-charcoal/40 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl mx-auto w-full md:w-auto overflow-x-auto no-scrollbar">
+    <nav className="fixed bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] animate-in slide-in-from-bottom-8 duration-1000 delay-500 fill-mode-both w-[98vw] max-w-[95vw] md:w-[max-content]">
+      <div className="flex items-center justify-between md:justify-center max-[360px]:gap-0 gap-0.5 md:gap-2 max-[360px]:p-0.5 p-1 md:p-2 bg-charcoal/40 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl mx-auto w-full md:w-auto overflow-x-auto no-scrollbar">
         {displaySocials.map((social) => (
           <a
             key={social.name}
             href={social.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0 rounded-full text-silver/60 hover:text-white transition-all duration-300 hover:bg-white/5"
+            className="group relative flex items-center justify-center max-[360px]:w-6 max-[360px]:h-6 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0 rounded-full text-silver/60 hover:text-white transition-all duration-300 hover:bg-white/5"
             onMouseEnter={() => setCursorType('view')}
             onMouseLeave={() => setCursorType('default')}
           >
-            {social.icon}
+            <div className="scale-75 sm:scale-100 flex items-center justify-center">{social.icon}</div>
             
             {/* Tooltip */}
-            <span className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1 bg-white text-black text-[8px] font-mono font-bold uppercase tracking-widest rounded-sm opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+            <span className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1 bg-white text-black text-[8px] font-mono font-bold uppercase tracking-widest rounded-sm opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap hidden md:block">
               {social.name}
             </span>
           </a>
         ))}
         
-        <div className="w-[1px] h-4 md:h-6 bg-white/10 mx-0.5 md:mx-2 shrink-0" />
+        <div className="w-[1px] h-3 sm:h-4 md:h-6 bg-white/10 max-[360px]:mx-0 mx-0.5 md:mx-2 shrink-0" />
         
         <TransitionLink 
           href="/archive"
-          className="px-2 sm:px-3 md:px-4 py-1.5 md:py-2 text-silver/60 hover:text-white text-[8px] sm:text-[9px] md:text-[10px] font-mono font-bold uppercase tracking-widest transition-colors whitespace-nowrap"
+          className="max-[360px]:px-1.5 px-2 sm:px-3 md:px-4 py-1.5 md:py-2 text-silver/60 hover:text-white max-[360px]:text-[7px] text-[8px] sm:text-[9px] md:text-[10px] font-mono font-bold uppercase tracking-widest transition-colors whitespace-nowrap"
           onMouseEnter={() => setCursorType('view')}
           onMouseLeave={() => setCursorType('default')}
         >
@@ -119,7 +119,7 @@ export default function FloatingNav({ data }: { data?: GlobalSettingsData }) {
 
         <button 
           onClick={toggleInfo}
-          className="px-2 sm:px-3 md:px-4 py-1.5 md:py-2 text-silver/60 hover:text-white text-[8px] sm:text-[9px] md:text-[10px] font-mono font-bold uppercase tracking-widest transition-colors whitespace-nowrap"
+          className="max-[360px]:px-1.5 px-2 sm:px-3 md:px-4 py-1.5 md:py-2 text-silver/60 hover:text-white max-[360px]:text-[7px] text-[8px] sm:text-[9px] md:text-[10px] font-mono font-bold uppercase tracking-widest transition-colors whitespace-nowrap"
           onMouseEnter={() => setCursorType('view')}
           onMouseLeave={() => setCursorType('default')}
         >
@@ -128,7 +128,7 @@ export default function FloatingNav({ data }: { data?: GlobalSettingsData }) {
 
         <a 
           href={contactEmail}
-          className="px-3 sm:px-4 md:px-6 py-1.5 md:py-2 bg-white text-black text-[8px] sm:text-[9px] md:text-[10px] font-mono font-bold uppercase tracking-widest rounded-full hover:scale-105 transition-transform whitespace-nowrap ml-0.5 md:ml-2 shrink-0"
+          className="max-[360px]:px-2.5 px-3 sm:px-4 md:px-6 py-1.5 md:py-2 bg-white text-black max-[360px]:text-[7px] text-[8px] sm:text-[9px] md:text-[10px] font-mono font-bold uppercase tracking-widest rounded-full hover:scale-105 transition-transform whitespace-nowrap ml-0.5 md:ml-2 shrink-0"
           onMouseEnter={() => setCursorType('view')}
           onMouseLeave={() => setCursorType('default')}
         >

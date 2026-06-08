@@ -43,8 +43,16 @@ export async function POST(req: Request) {
       `,
     });
 
+    // Resend returns an error object inside data if it fails, but doesn't necessarily throw
+    if (data.error) {
+      console.error('Resend API Error:', data.error);
+      return NextResponse.json({ error: data.error.message }, { status: 400 });
+    }
+
+    console.log('Resend Success:', data);
     return NextResponse.json(data);
   } catch (error) {
+    console.error('Contact Form Server Error:', error);
     return NextResponse.json({ error: 'Failed to send message' }, { status: 500 });
   }
 }

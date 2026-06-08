@@ -75,7 +75,7 @@ export const FALLBACK_INFO = {
       children: [
         {
           _type: 'span',
-          text: 'Jamin Ugoh is an award-winning Director, Writer, and Cinematographer based in the UK. With a passion for visual storytelling, his work spans across short films, commercials, and music videos. He is currently developing his debut feature film.'
+          text: 'Jamin Ugoh is a Director, Writer, and Cinematographer based in the UK. With a passion for visual storytelling, his work spans across short films, commercials, and music videos. He is currently developing his debut feature film.'
         }
       ]
     }
