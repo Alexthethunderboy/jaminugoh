@@ -26,10 +26,23 @@ export const heroSection = defineType({
       description: 'Direct link to mp4 video for the hero background.',
     }),
     defineField({
+      name: 'videoFile',
+      title: 'Background Video File',
+      type: 'file',
+      options: { accept: 'video/*' },
+      description: 'Upload an mp4 video file directly for the hero background.',
+    }),
+    defineField({
       name: 'poster',
       title: 'Video Poster / Fallback Image',
       type: 'image',
       options: { hotspot: true },
+    }),
+    defineField({
+      name: 'posterUrl',
+      title: 'Video Poster / Fallback Image URL',
+      type: 'url',
+      description: 'A direct link to an image. Used if no file is uploaded.',
     }),
   ],
 })

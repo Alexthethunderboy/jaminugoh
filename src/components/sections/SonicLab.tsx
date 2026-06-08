@@ -7,8 +7,23 @@ import { useAppStore } from '@/lib/store';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function SonicLab({ tracks }: { tracks: any[] }) {
-  const [playingTrack, setPlayingTrack] = useState<number | null>(null);
-  const setCursorType = useAppStore((state) => state.setCursorType);
+  const { currentTrack, isPlaying, playTrack, togglePlay, setCursorType } = useAppStore();
+
+  const handleTrackClick = (track: any, index: number) => {
+    const isThisTrack = currentTrack?.id === (track._id || index.toString());
+    
+    if (isThisTrack) {
+      togglePlay();
+    } else {
+      playTrack({
+        id: track._id || index.toString(),
+        title: track.title,
+        url: track.audioUrl || track.fileUrl || track.url || "", // Adjust based on your sanity query
+        duration: track.duration,
+        category: track.category
+      });
+    }
+  };
 
   return (
     <section className="relative min-h-screen bg-obsidian py-16 px-8 md:px-24">
@@ -17,57 +32,62 @@ export default function SonicLab({ tracks }: { tracks: any[] }) {
         <h2 className="text-h1 mb-16 text-silver">Audio<br/>Scapes</h2>
         
         <div className="space-y-4">
-          {tracks.map((track, i) => (
-            <div 
-              key={track._id || i}
-              className="group flex flex-col md:flex-row md:items-center justify-between p-6 md:p-8 border border-silver/5 hover:border-silver/20 hover:bg-white/[0.02] transition-all cursor-pointer gap-6 md:gap-0"
-              onClick={() => setPlayingTrack(playingTrack === i ? null : i)}
-              onMouseEnter={() => setCursorType('audio')}
-              onMouseLeave={() => setCursorType('default')}
-            >
-              <div className="flex items-center gap-6 md:gap-12">
-                <span className="font-mono text-[10px] md:text-micro text-silver/30">0{i + 1}</span>
-                <div>
-                  <h3 className="text-xl md:text-2xl font-display font-bold uppercase text-silver group-hover:text-white transition-colors">
-                    {track.title}
-                  </h3>
-                  <Metadata className="mt-1 md:mt-2 text-silver/40">{track.category}</Metadata>
-                </div>
-              </div>
-              
-              <div className="flex items-center justify-between md:justify-end gap-6 md:gap-8">
-                {/* Minimal Waveform Animation (Fake) */}
-                <div className="flex items-end gap-[2px] h-6 md:h-8">
-                  {[...Array(10)].map((_, j) => (
-                    <div 
-                      key={j}
-                      className={`w-[2px] bg-silver/20 transition-all duration-300 ${
-                        playingTrack === i ? 'animate-pulse' : ''
-                      }`}
-                      style={{ 
-                        height: playingTrack === i ? `${Math.random() * 100}%` : '20%',
-                        animationDelay: `${j * 0.1}s`
-                      }}
-                    />
-                  ))}
+          {tracks.map((track, i) => {
+            const isThisTrack = currentTrack?.id === (track._id || i.toString());
+            const isTrackPlaying = isThisTrack && isPlaying;
+
+            return (
+              <div 
+                key={track._id || i}
+                className="group flex flex-col md:flex-row md:items-center justify-between p-6 md:p-8 border border-silver/5 hover:border-silver/20 hover:bg-white/[0.02] transition-all cursor-pointer gap-6 md:gap-0"
+                onClick={() => handleTrackClick(track, i)}
+                onMouseEnter={() => setCursorType('audio')}
+                onMouseLeave={() => setCursorType('default')}
+              >
+                <div className="flex items-center gap-6 md:gap-12">
+                  <span className="font-mono text-[10px] md:text-micro text-silver/30">0{i + 1}</span>
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-display font-bold uppercase text-silver group-hover:text-white transition-colors">
+                      {track.title}
+                    </h3>
+                    <Metadata className="mt-1 md:mt-2 text-silver/40">{track.category}</Metadata>
+                  </div>
                 </div>
                 
-                <div className="flex items-center gap-6">
-                  <span className="font-mono text-micro text-silver/40 w-12 text-right">
-                    {track.duration}
-                  </span>
+                <div className="flex items-center justify-between md:justify-end gap-6 md:gap-8">
+                  {/* Minimal Waveform Animation (Fake) */}
+                  <div className="flex items-end gap-[2px] h-6 md:h-8">
+                    {[...Array(10)].map((_, j) => (
+                      <div 
+                        key={j}
+                        className={`w-[2px] bg-silver/20 transition-all duration-300 ${
+                          isTrackPlaying ? 'animate-pulse bg-white/60' : ''
+                        }`}
+                        style={{ 
+                          height: isTrackPlaying ? `${Math.random() * 100}%` : '20%',
+                          animationDelay: `${j * 0.1}s`
+                        }}
+                      />
+                    ))}
+                  </div>
                   
-                  <button className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-silver/20 flex items-center justify-center group-hover:bg-white group-hover:border-white transition-all shrink-0">
-                    {playingTrack === i ? (
-                      <Pause size={14} className="text-silver group-hover:text-black" />
-                    ) : (
-                      <Play size={14} className="text-silver group-hover:text-black translate-x-[1px]" />
-                    )}
-                  </button>
+                  <div className="flex items-center gap-6">
+                    <span className="font-mono text-micro text-silver/40 w-12 text-right">
+                      {track.duration}
+                    </span>
+                    
+                    <button className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-silver/20 flex items-center justify-center group-hover:bg-white group-hover:border-white transition-all shrink-0">
+                      {isTrackPlaying ? (
+                        <Pause size={14} className="text-silver group-hover:text-black" />
+                      ) : (
+                        <Play size={14} className="text-silver group-hover:text-black translate-x-[1px]" />
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

@@ -46,10 +46,10 @@ export default async function Home() {
           Let&apos;s Talk
         </h2>
         <a 
-          href="mailto:jamin@example.com" 
+          href="mailto:Benjaminugoh@gmail.com" 
           className="text-micro border-b border-silver/20 pb-2 hover:border-silver transition-colors"
         >
-          jaminugoh.film@gmail.com
+          Benjaminugoh@gmail.com
         </a>
         
         <div className="mt-24 flex gap-8">

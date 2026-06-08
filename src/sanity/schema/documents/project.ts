@@ -12,6 +12,19 @@ export const project = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: { source: 'title', maxLength: 96 },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'description',
+      title: 'Project Description',
+      type: 'array',
+      of: [{ type: 'block' }],
+    }),
+    defineField({
       name: 'role',
       title: 'Role',
       type: 'string',
@@ -28,7 +41,13 @@ export const project = defineType({
       title: 'Video URL (mp4)',
       type: 'url',
       description: 'A direct link to an mp4 video file. e.g. a CDN link.',
-      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'videoFile',
+      title: 'Video File',
+      type: 'file',
+      options: { accept: 'video/*' },
+      description: 'Upload an mp4 video file directly.',
     }),
     defineField({
       name: 'poster',
@@ -36,7 +55,25 @@ export const project = defineType({
       type: 'image',
       options: { hotspot: true },
       description: 'Used for the WebGL distortion effect and video fallback.',
-      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'posterUrl',
+      title: 'Poster Image URL',
+      type: 'url',
+      description: 'A direct link to an image. Used if no file is uploaded.',
+    }),
+    defineField({
+      name: 'scriptFile',
+      title: 'Script File (PDF)',
+      type: 'file',
+      options: { accept: 'application/pdf' },
+      description: 'Upload a PDF script/screenplay.',
+    }),
+    defineField({
+      name: 'scriptUrl',
+      title: 'Script URL (PDF)',
+      type: 'url',
+      description: 'A direct link to a PDF script.',
     }),
     defineField({
       name: 'sortOrder',
@@ -44,6 +81,52 @@ export const project = defineType({
       type: 'number',
       description: 'Lower numbers show up first in the gallery.',
       initialValue: 0,
+    }),
+    defineField({
+      name: 'expandedGallery',
+      title: 'Expanded Gallery',
+      type: 'array',
+      description: 'Additional images or videos to display on the project detail page.',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'mediaType',
+              title: 'Media Type',
+              type: 'string',
+              options: { list: ['image', 'video'] },
+              initialValue: 'image',
+            }),
+            defineField({
+              name: 'imageFile',
+              title: 'Image File',
+              type: 'image',
+              options: { hotspot: true },
+              hidden: ({ parent }) => parent?.mediaType !== 'image',
+            }),
+            defineField({
+              name: 'imageUrl',
+              title: 'Image URL',
+              type: 'url',
+              hidden: ({ parent }) => parent?.mediaType !== 'image',
+            }),
+            defineField({
+              name: 'videoFile',
+              title: 'Video File',
+              type: 'file',
+              options: { accept: 'video/*' },
+              hidden: ({ parent }) => parent?.mediaType !== 'video',
+            }),
+            defineField({
+              name: 'videoUrl',
+              title: 'Video URL',
+              type: 'url',
+              hidden: ({ parent }) => parent?.mediaType !== 'video',
+            }),
+          ]
+        }
+      ]
     }),
   ],
   preview: {

@@ -6,13 +6,16 @@ import { useGSAP } from '@gsap/react';
 import { useAppStore } from '@/lib/store';
 import { H1, Metadata } from '@/components/ui/typography';
 import { urlForImage } from '@/sanity/lib/image';
+import StarryBackground from '@/components/motion/StarryBackground';
 
 interface HeroData {
   title: string;
   roles: string[];
   videoUrl?: string;
+  videoFileUrl?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   poster?: any;
+  posterUrl?: string;
 }
 
 export default function HeroStream({ data }: { data: HeroData }) {
@@ -23,14 +26,18 @@ export default function HeroStream({ data }: { data: HeroData }) {
   
   const setCursorType = useAppStore((state) => state.setCursorType);
 
-  const posterUrl = typeof data.poster === 'string' 
+  const finalPosterUrl = data.posterUrl || (typeof data.poster === 'string' 
     ? data.poster 
-    : data.poster ? urlForImage(data.poster)?.url() : undefined;
+    : data.poster ? urlForImage(data.poster)?.url() : undefined);
+    
+  const finalVideoUrl = data.videoFileUrl || data.videoUrl;
 
   useGSAP(() => {
     const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const bgMedia = containerRef.current?.querySelector('.hero-bg-media');
+
     if (isReducedMotion) {
-      if (videoRef.current) gsap.set(videoRef.current, { scale: 1, filter: "blur(0px)", opacity: 0.6 });
+      if (bgMedia) gsap.set(bgMedia, { scale: 1, filter: "blur(0px)", opacity: 1, clearProps: "filter" });
       gsap.set(".char", { y: 0, opacity: 1, rotateX: 0 });
       if (metadataRef.current) gsap.set(metadataRef.current, { opacity: 1, y: 0 });
       return;
@@ -39,16 +46,19 @@ export default function HeroStream({ data }: { data: HeroData }) {
     const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
 
     // Entry Animation
+    if (bgMedia) {
+      tl.fromTo(
+        bgMedia,
+        { scale: 1.15, filter: "blur(20px)", opacity: 0 },
+        { scale: 1, filter: "blur(0px)", opacity: 1, duration: 2.5, clearProps: "filter" }
+      );
+    }
+
     tl.fromTo(
-      videoRef.current,
-      { scale: 1.15, filter: "blur(20px)", opacity: 0 },
-      { scale: 1, filter: "blur(0px)", opacity: 0.6, duration: 2.5 }
-    )
-    .fromTo(
       ".char",
       { y: 150, opacity: 0, rotateX: -90 },
       { y: 0, opacity: 1, rotateX: 0, duration: 1.5, stagger: 0.04 },
-      "-=1.8"
+      bgMedia ? "-=1.8" : 0
     )
     .fromTo(
       metadataRef.current,
@@ -58,13 +68,15 @@ export default function HeroStream({ data }: { data: HeroData }) {
     );
 
     // Ambient Pan/Scale
-    gsap.to(videoRef.current, {
-      scale: 1.05,
-      duration: 20,
-      ease: "sine.inOut",
-      yoyo: true,
-      repeat: -1
-    });
+    if (bgMedia) {
+      gsap.to(bgMedia, {
+        scale: 1.15,
+        duration: 20,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1
+      });
+    }
 
     // Parallax Mouse Effect
     const handleMouseParallax = (e: MouseEvent) => {
@@ -101,35 +113,43 @@ export default function HeroStream({ data }: { data: HeroData }) {
       onMouseEnter={() => setCursorType('play')}
       onMouseLeave={() => setCursorType('default')}
     >
-      {/* Background Video */}
+      {/* Background Video or Stars */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/80 z-10 mix-blend-multiply pointer-events-none" />
-        {data.videoUrl && (
+        {finalVideoUrl ? (
           <video
             ref={videoRef}
             autoPlay
             loop
             muted
             playsInline
-            className="w-full h-full object-cover origin-center opacity-0"
-            poster={posterUrl}
+            className="hero-bg-media w-full h-full object-cover origin-center opacity-0"
+            poster={finalPosterUrl}
           >
-            <source src={data.videoUrl} type="video/mp4" />
+            <source src={finalVideoUrl} type="video/mp4" />
           </video>
+        ) : finalPosterUrl ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img 
+            src={finalPosterUrl} 
+            alt="Hero Background" 
+            className="hero-bg-media w-full h-full object-cover origin-center opacity-0" 
+          />
+        ) : (
+          <StarryBackground />
         )}
       </div>
 
       {/* Foreground Content */}
-      <div className="relative z-20 flex flex-col items-center pointer-events-none text-center px-4 w-full">
+      <div className="relative z-20 flex flex-col items-center pointer-events-none text-center px-4 w-full -mt-[12px]">
         <H1 
           ref={titleRef} 
-          className="text-[12vw] mix-blend-difference text-silver drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] whitespace-nowrap" 
+          className="text-[12vw] text-center mix-blend-difference text-silver drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]" 
           style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
         >
           {splitText(data.title)}
         </H1>
         
-        <div ref={metadataRef} className="mt-4 md:mt-8 flex flex-wrap justify-center gap-4 md:gap-8 opacity-0">
+        <div ref={metadataRef} className="-mt-2 md:-mt-6 flex flex-wrap justify-center gap-4 md:gap-8 opacity-0">
           {data.roles?.map((role, idx) => (
             <React.Fragment key={idx}>
               <Metadata>{role}</Metadata>

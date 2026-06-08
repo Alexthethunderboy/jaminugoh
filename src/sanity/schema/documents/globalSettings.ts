@@ -45,5 +45,26 @@ export const globalSettings = defineType({
         },
       ],
     }),
+    defineField({
+      name: 'headshot',
+      title: 'Headshot / Portrait',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Image displayed in the Info/About drawer.',
+    }),
+    defineField({
+      name: 'bio',
+      title: 'Biography',
+      type: 'array',
+      of: [{ type: 'block' }],
+      description: 'Your biography displayed in the Info drawer.',
+    }),
+    defineField({
+      name: 'clientRoster',
+      title: 'Client Roster',
+      type: 'array',
+      of: [{ type: 'string' }],
+      description: 'List of brands, clients, or awards.',
+    }),
   ],
 })
