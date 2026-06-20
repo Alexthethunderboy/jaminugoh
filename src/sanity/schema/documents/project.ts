@@ -43,6 +43,12 @@ export const project = defineType({
       description: 'A direct link to an mp4 video file. e.g. a CDN link.',
     }),
     defineField({
+      name: 'youtubeUrl',
+      title: 'YouTube URL',
+      type: 'url',
+      description: 'A direct link to a YouTube video. Used for full video preview.',
+    }),
+    defineField({
       name: 'videoFile',
       title: 'Video File',
       type: 'file',

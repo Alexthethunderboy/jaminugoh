@@ -4,6 +4,7 @@ import React from 'react';
 import { Metadata } from '@/components/ui/typography';
 import { Play, Pause } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
+import TransitionLink from '@/components/layout/TransitionLink';
 
 export interface SonicLabTrack {
   _id?: string;
@@ -97,6 +98,17 @@ export default function SonicLab({ tracks }: { tracks: SonicLabTrack[] }) {
               </div>
             );
           })}
+        </div>
+
+        <div className="mt-24 flex justify-center">
+          <TransitionLink 
+            href="/audio"
+            className="border border-silver/20 hover:border-silver/60 text-silver hover:text-white px-8 py-3 rounded-full text-xs font-mono uppercase tracking-widest transition-all duration-300"
+            onMouseEnter={() => setCursorType('view')}
+            onMouseLeave={() => setCursorType('default')}
+          >
+            Explore More Audio Scapes
+          </TransitionLink>
         </div>
       </div>
     </section>

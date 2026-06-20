@@ -33,6 +33,7 @@ export const projectsQuery = groq`
     year,
     "videoFileUrl": videoFile.asset->url,
     videoUrl,
+    youtubeUrl,
     poster,
     posterUrl
   }
@@ -48,6 +49,7 @@ export const projectBySlugQuery = groq`
     description,
     "videoFileUrl": videoFile.asset->url,
     videoUrl,
+    youtubeUrl,
     poster,
     posterUrl,
     "scriptFileUrl": scriptFile.asset->url,

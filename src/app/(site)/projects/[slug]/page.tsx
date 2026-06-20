@@ -8,6 +8,7 @@ import React from 'react';
 import TransitionLink from '@/components/layout/TransitionLink';
 import { ArrowLeft } from 'lucide-react';
 import ScreenplayTrigger from '@/components/ui/ScreenplayTrigger';
+import PlayVideoButton from '@/components/ui/PlayVideoButton';
 
 interface ExpandedGalleryItem {
   mediaType?: string;
@@ -84,6 +85,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <H1 className="text-[10vw] md:text-[6vw] font-display font-bold uppercase leading-[0.9] tracking-tighter mix-blend-difference">
             {project.title}
           </H1>
+          <PlayVideoButton videoUrl={mainVideoUrl} youtubeUrl={project.youtubeUrl} />
         </div>
       </section>
 
