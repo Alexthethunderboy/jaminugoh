@@ -9,6 +9,7 @@ export default function GlobalCanvas() {
   const [eventSource, setEventSource] = React.useState<HTMLElement | null>(null);
 
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setEventSource(document.body);
   }, []);
 

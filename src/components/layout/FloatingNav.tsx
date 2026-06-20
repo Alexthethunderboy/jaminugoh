@@ -38,6 +38,7 @@ const VimeoIcon = ({ size = 18 }) => (
 
 // Map common platforms to their icons
 const getSocialIcon = (platform: string, size = 18) => {
+  if (!platform) return <LinkIcon size={size} />;
   const p = platform.toLowerCase();
   if (p.includes('instagram')) return <InstagramIcon size={size} />;
   if (p.includes('youtube')) return <YoutubeIcon size={size} />;

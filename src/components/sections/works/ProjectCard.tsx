@@ -3,7 +3,6 @@
 import React from 'react';
 import { Metadata } from '@/components/ui/typography';
 import { useAppStore } from '@/lib/store';
-import WebGLDistortionImage from '@/components/motion/WebGLDistortionImage';
 import TransitionLink from '@/components/layout/TransitionLink';
 import { resolveProjectMedia } from '@/lib/media';
 

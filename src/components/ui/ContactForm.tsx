@@ -45,7 +45,7 @@ export default function ContactForm() {
       
       // Reset success state after 5 seconds
       setTimeout(() => setIsSuccess(false), 5000);
-    } catch (err) {
+    } catch {
       setError('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);

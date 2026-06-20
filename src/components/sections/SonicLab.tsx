@@ -1,15 +1,24 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Metadata } from '@/components/ui/typography';
 import { Play, Pause } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function SonicLab({ tracks }: { tracks: any[] }) {
+export interface SonicLabTrack {
+  _id?: string;
+  title?: string;
+  audioUrl?: string;
+  fileUrl?: string;
+  url?: string;
+  duration?: string;
+  category?: string;
+}
+
+export default function SonicLab({ tracks }: { tracks: SonicLabTrack[] }) {
   const { currentTrack, isPlaying, playTrack, togglePlay, setCursorType } = useAppStore();
 
-  const handleTrackClick = (track: any, index: number) => {
+  const handleTrackClick = (track: SonicLabTrack, index: number) => {
     const isThisTrack = currentTrack?.id === (track._id || index.toString());
     
     if (isThisTrack) {

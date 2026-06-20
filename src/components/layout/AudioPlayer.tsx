@@ -28,6 +28,7 @@ export default function AudioPlayer() {
       gsap.to(containerRef.current, { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out', display: 'flex' });
     } else {
       gsap.to(containerRef.current, { y: 20, opacity: 0, duration: 0.5, ease: 'power3.in', display: 'none' });
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setProgress(0);
     }
   }, [currentTrack]);
