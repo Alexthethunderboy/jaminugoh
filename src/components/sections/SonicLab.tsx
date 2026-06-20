@@ -26,10 +26,10 @@ export default function SonicLab({ tracks }: { tracks: SonicLabTrack[] }) {
     } else {
       playTrack({
         id: track._id || index.toString(),
-        title: track.title,
+        title: track.title || "Unknown Track",
         url: track.audioUrl || track.fileUrl || track.url || "", // Adjust based on your sanity query
-        duration: track.duration,
-        category: track.category
+        duration: track.duration || "0:00",
+        category: track.category || "Uncategorized"
       });
     }
   };
