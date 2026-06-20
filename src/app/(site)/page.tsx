@@ -7,6 +7,8 @@ import { client } from "@/sanity/lib/client";
 import { heroSectionQuery, projectsQuery, screenplaysQuery, audioTracksQuery } from "@/sanity/lib/queries";
 import { FALLBACK_HERO, FALLBACK_PROJECTS, FALLBACK_SCRIPTS, FALLBACK_TRACKS } from "@/data/fallback";
 
+export const revalidate = 30;
+
 export default async function Home() {
   let hero = FALLBACK_HERO;
   let projects = FALLBACK_PROJECTS;

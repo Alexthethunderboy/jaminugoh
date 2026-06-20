@@ -11,6 +11,8 @@ import GlobalCanvas from "@/components/layout/GlobalCanvas";
 import { client } from "@/sanity/lib/client";
 import { globalSettingsQuery } from "@/sanity/lib/queries";
 
+export const revalidate = 30;
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
