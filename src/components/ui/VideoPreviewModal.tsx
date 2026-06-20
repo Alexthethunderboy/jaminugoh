@@ -7,6 +7,12 @@ import dynamic from 'next/dynamic';
 
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 
+const YoutubeIcon = ({ size = 18 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 2-2h15a2 2 0 0 1 2 2 24.12 24.12 0 0 1 0 10 2 2 0 0 1-2 2h-15a2 2 0 0 1-2-2Z"/><path d="m10 15 5-3-5-3v6Z"/>
+  </svg>
+);
+
 interface VideoPreviewModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -54,13 +60,27 @@ export default function VideoPreviewModal({ isOpen, onClose, videoUrl }: VideoPr
           className="fixed inset-0 z-[100] flex items-center justify-center bg-obsidian/90 backdrop-blur-md p-4 md:p-8"
           onClick={onClose}
         >
-          <button 
-            onClick={onClose}
-            className="absolute top-6 right-6 md:top-8 md:right-8 z-50 p-2 bg-charcoal/50 hover:bg-charcoal text-silver hover:text-white rounded-full transition-all duration-300"
-            aria-label="Close video"
-          >
-            <X size={24} />
-          </button>
+          <div className="absolute top-6 right-6 md:top-8 md:right-8 z-50 flex items-center gap-3">
+            {videoUrl && (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) && (
+              <a 
+                href={videoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-[#FF0000] hover:bg-red-700 text-white font-bold rounded-full text-sm transition-colors shadow-lg flex items-center gap-2"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <YoutubeIcon size={18} />
+                Watch on YouTube
+              </a>
+            )}
+            <button 
+              onClick={onClose}
+              className="p-2 bg-charcoal/50 hover:bg-charcoal text-silver hover:text-white rounded-full transition-all duration-300"
+              aria-label="Close video"
+            >
+              <X size={24} />
+            </button>
+          </div>
 
           <motion.div 
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -74,15 +94,10 @@ export default function VideoPreviewModal({ isOpen, onClose, videoUrl }: VideoPr
               url={videoUrl}
               width="100%"
               height="100%"
+              className="absolute top-0 left-0"
               playing={isOpen}
               controls={true}
-              fallback={<div className="w-full h-full flex items-center justify-center text-silver">Loading player...</div>}
-              config={{
-                youtube: {
-                  // @ts-expect-error react-player types are slightly outdated
-                  playerVars: { autoplay: 1, modestbranding: 1, rel: 0 }
-                }
-              }}
+              fallback={<div className="w-full h-full flex items-center justify-center text-silver absolute top-0 left-0 bg-black">Loading player...</div>}
             />
           </motion.div>
         </motion.div>
