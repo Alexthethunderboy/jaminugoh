@@ -36,7 +36,13 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     ? project.poster 
     : project.poster ? urlForImage(project.poster)?.url() : '');
     
-  const mainVideoUrl = project.videoFileUrl || project.videoUrl;
+  const isYoutubeLink = (url: string | null) => url && (url.includes('youtube.com') || url.includes('youtu.be'));
+
+  // Ensure background video is only MP4, never a YouTube link
+  const mainVideoUrl = project.videoFileUrl || (project.videoUrl && !isYoutubeLink(project.videoUrl) ? project.videoUrl : null);
+
+  // If a YouTube link was pasted in videoUrl, use it as youtubeUrl
+  const finalYoutubeUrl = project.youtubeUrl || (project.videoUrl && isYoutubeLink(project.videoUrl) ? project.videoUrl : null);
 
   const finalScriptUrl = project.scriptFileUrl || project.scriptUrl;
 
@@ -85,7 +91,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <H1 className="text-[10vw] md:text-[6vw] font-display font-bold uppercase leading-[0.9] tracking-tighter mix-blend-difference">
             {project.title}
           </H1>
-          <PlayVideoButton videoUrl={mainVideoUrl} youtubeUrl={project.youtubeUrl} />
+          <PlayVideoButton videoUrl={mainVideoUrl || ''} youtubeUrl={finalYoutubeUrl || undefined} />
         </div>
       </section>
 
