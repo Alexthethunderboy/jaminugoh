@@ -9,6 +9,8 @@ import TransitionLink from '@/components/layout/TransitionLink';
 import { ArrowLeft } from 'lucide-react';
 import ScreenplayTrigger from '@/components/ui/ScreenplayTrigger';
 import PlayVideoButton from '@/components/ui/PlayVideoButton';
+import ClientHeroVideo from '@/components/ui/ClientHeroVideo';
+import ClientGalleryVideo from '@/components/ui/ClientGalleryVideo';
 import { resolveProjectMedia } from '@/lib/media';
 
 interface ExpandedGalleryItem {
@@ -53,25 +55,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       {/* Hero Section for Project */}
       <section className="relative w-full h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-charcoal pointer-events-none">
-          {mainVideoUrl ? (
-            <video 
-              autoPlay 
-              loop 
-              muted 
-              playsInline
-              className="w-full h-full object-cover opacity-60"
-              poster={mainPosterUrl}
-            >
-              <source src={mainVideoUrl} type="video/mp4" />
-            </video>
-          ) : mainPosterUrl ? (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img 
-              src={mainPosterUrl} 
-              alt={project.title} 
-              className="w-full h-full object-cover opacity-60"
-            />
-          ) : null}
+          <ClientHeroVideo 
+            youtubeUrl={finalYoutubeUrl || null} 
+            videoUrl={mainVideoUrl || null} 
+            posterUrl={mainPosterUrl || null} 
+            title={project.title} 
+          />
           <div className="absolute inset-0 bg-linear-to-b from-transparent to-obsidian" />
         </div>
         
@@ -111,15 +100,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               return (
                 <div key={idx} className="relative w-full bg-charcoal rounded-sm overflow-hidden group break-inside-avoid">
                   {item.mediaType === 'video' && itemVideoUrl ? (
-                    <video 
-                      autoPlay={false}
-                      controls
-                      playsInline
-                      className="w-full h-auto object-cover"
-                      poster={itemPosterUrl}
-                    >
-                      <source src={itemVideoUrl} type="video/mp4" />
-                    </video>
+                    <ClientGalleryVideo videoUrl={itemVideoUrl} posterUrl={itemPosterUrl} />
                   ) : itemPosterUrl ? (
                     /* eslint-disable-next-line @next/next/no-img-element */
                     <img 
