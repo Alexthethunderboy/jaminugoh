@@ -77,6 +77,16 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
       {/* Content Section */}
       <section className="relative w-full px-4 md:px-12 py-12 md:py-24 max-w-5xl mx-auto flex flex-col items-center">
+        {/* Main Embedded Project Video */}
+        {(finalYoutubeUrl || mainVideoUrl) && (
+          <div className="w-full aspect-video mb-12 md:mb-16 bg-black rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+            <ClientGalleryVideo 
+              videoUrl={finalYoutubeUrl || mainVideoUrl!} 
+              posterUrl={mainPosterUrl || ''} 
+            />
+          </div>
+        )}
+
         {project.description && (
           <div className="prose prose-invert prose-lg max-w-none text-silver/80 w-full text-left">
             <PortableText value={project.description} />
