@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import NativeYoutubeEmbed from './NativeYoutubeEmbed';
+import { isYoutubeLink } from '@/lib/media';
 
 const YoutubeIcon = ({ size = 18 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -89,7 +90,7 @@ export default function VideoPreviewModal({ isOpen, onClose, videoUrl }: VideoPr
             className="relative w-full max-w-6xl aspect-video bg-black rounded-lg shadow-2xl overflow-hidden ring-1 ring-white/10"
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the player
           >
-            {videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be') ? (
+            {isYoutubeLink(videoUrl) ? (
               <NativeYoutubeEmbed 
                 url={videoUrl}
                 autoplay={true}

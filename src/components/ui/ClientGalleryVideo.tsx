@@ -3,13 +3,15 @@
 import React from 'react';
 import NativeYoutubeEmbed from './NativeYoutubeEmbed';
 
+import { isYoutubeLink } from '@/lib/media';
+
 interface ClientGalleryVideoProps {
   videoUrl: string;
   posterUrl: string;
 }
 
 export default function ClientGalleryVideo({ videoUrl, posterUrl }: ClientGalleryVideoProps) {
-  const isYoutube = videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be');
+  const isYoutube = isYoutubeLink(videoUrl);
 
   if (isYoutube) {
     return (

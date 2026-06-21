@@ -1,6 +1,6 @@
 import { urlForImage } from '@/sanity/lib/image';
 
-const isYoutubeLink = (url: string | null) => !!(url && (url.includes('youtube.com') || url.includes('youtu.be')));
+export const isYoutubeLink = (url: string | null | undefined): url is string => !!(url && (url.includes('youtube.com') || url.includes('youtu.be')));
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function resolveProjectMedia(project: any) {
