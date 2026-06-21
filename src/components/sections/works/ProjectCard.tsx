@@ -5,7 +5,7 @@ import { Metadata } from '@/components/ui/typography';
 import { useAppStore } from '@/lib/store';
 import TransitionLink from '@/components/layout/TransitionLink';
 import { resolveProjectMedia } from '@/lib/media';
-import NativeYoutubeEmbed from '@/components/ui/NativeYoutubeEmbed';
+import { urlForImage } from '@/sanity/lib/image';
 
 interface ProjectCardProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,38 +47,24 @@ export default function ProjectCard({
           <img 
             src={posterUrl} 
             alt={project.title || "Project poster"} 
-            className={`w-full h-full object-cover transition-opacity duration-500 ${isHovered && (videoUrl || youtubeUrl) ? 'opacity-0' : 'opacity-100'}`} 
-          />
-        )}
-      </div>
-      {videoUrl && !youtubeUrl && (
-        <video 
-          ref={videoRef}
-          loop 
-          muted 
-          playsInline
-          preload="none"
-          className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover/card:opacity-100 pointer-events-none"
-        >
-          <source src={videoUrl} type="video/mp4" />
-        </video>
+          className={`w-full h-full object-cover transition-opacity duration-500 ${isHovered && videoUrl && !youtubeUrl ? 'opacity-0' : 'opacity-100'}`} 
+        />
       )}
-      {youtubeUrl && (
-        <div className={`absolute inset-0 w-full h-full transition-opacity duration-500 pointer-events-none overflow-hidden ${isHovered ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}>
-          {/* Scale up to hide youtube borders/title */}
-          <div className="w-full h-full transform scale-[1.35] md:scale-[1.15]">
-            <NativeYoutubeEmbed 
-              url={youtubeUrl}
-              autoplay={isHovered}
-              muted={true}
-              loop={true}
-              controls={false}
-            />
-          </div>
-        </div>
-      )}
-    </>
-  );
+    </div>
+    {videoUrl && !youtubeUrl && (
+      <video 
+        ref={videoRef}
+        loop 
+        muted 
+        playsInline
+        preload="none"
+        className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover/card:opacity-100 pointer-events-none"
+      >
+        <source src={videoUrl} type="video/mp4" />
+      </video>
+    )}
+  </>
+);
 
   return (
     <div 
