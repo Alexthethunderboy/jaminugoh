@@ -16,12 +16,13 @@ export default function ClientGalleryVideo({ videoUrl, posterUrl }: ClientGaller
   if (isYoutube) {
     return (
       <div className="w-full aspect-video bg-black rounded-sm overflow-hidden">
+        {/* @ts-expect-error react-player types are slightly outdated */}
         <ReactPlayer 
           url={videoUrl}
           controls={true}
           width="100%"
           height="100%"
-          light={posterUrl || true}
+          light={posterUrl ? posterUrl : true}
         />
       </div>
     );
