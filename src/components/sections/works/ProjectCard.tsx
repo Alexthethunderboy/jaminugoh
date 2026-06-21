@@ -76,6 +76,7 @@ export default function ProjectCard({
               loop={true}
               width="100%"
               height="100%"
+              // @ts-expect-error react-player types are slightly outdated
               config={{ youtube: { playerVars: { controls: 0, disablekb: 1, fs: 0, modestbranding: 1, rel: 0 } } }}
             />
           </div>
