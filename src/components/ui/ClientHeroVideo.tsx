@@ -4,9 +4,9 @@ import React from 'react';
 import NativeYoutubeEmbed from './NativeYoutubeEmbed';
 
 interface ClientHeroVideoProps {
-  youtubeUrl: string | null;
-  videoUrl: string | null;
-  posterUrl: string | null;
+  youtubeUrl?: string | null;
+  videoUrl?: string | null;
+  posterUrl?: string | null;
   title?: string;
 }
 

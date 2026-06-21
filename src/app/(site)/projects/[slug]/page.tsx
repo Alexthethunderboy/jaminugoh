@@ -56,7 +56,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       <section className="relative w-full h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-charcoal pointer-events-none">
           <ClientHeroVideo 
-            youtubeUrl={finalYoutubeUrl || null} 
             videoUrl={mainVideoUrl || null} 
             posterUrl={mainPosterUrl || null} 
             title={project.title} 
