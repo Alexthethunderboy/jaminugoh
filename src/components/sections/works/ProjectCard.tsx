@@ -5,6 +5,9 @@ import { Metadata } from '@/components/ui/typography';
 import { useAppStore } from '@/lib/store';
 import TransitionLink from '@/components/layout/TransitionLink';
 import { resolveProjectMedia } from '@/lib/media';
+import dynamic from 'next/dynamic';
+
+const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 
 interface ProjectCardProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,7 +26,7 @@ export default function ProjectCard({
   onHoverLeave,
 }: ProjectCardProps) {
   const setCursorType = useAppStore((state) => state.setCursorType);
-  const { posterUrl, videoUrl } = resolveProjectMedia(project);
+  const { posterUrl, videoUrl, youtubeUrl } = resolveProjectMedia(project);
 
   const videoRef = React.useRef<HTMLVideoElement>(null);
 
@@ -46,11 +49,11 @@ export default function ProjectCard({
           <img 
             src={posterUrl} 
             alt={project.title || "Project poster"} 
-            className="w-full h-full object-cover" 
+            className={`w-full h-full object-cover transition-opacity duration-500 ${isHovered && (videoUrl || youtubeUrl) ? 'opacity-0' : 'opacity-100'}`} 
           />
         )}
       </div>
-      {videoUrl && (
+      {videoUrl && !youtubeUrl && (
         <video 
           ref={videoRef}
           loop 
@@ -61,6 +64,22 @@ export default function ProjectCard({
         >
           <source src={videoUrl} type="video/mp4" />
         </video>
+      )}
+      {youtubeUrl && (
+        <div className={`absolute inset-0 w-full h-full transition-opacity duration-500 pointer-events-none overflow-hidden ${isHovered ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}>
+          {/* Scale up to hide youtube borders/title */}
+          <div className="w-full h-full transform scale-[1.35] md:scale-[1.15]">
+            <ReactPlayer 
+              url={youtubeUrl}
+              playing={isHovered}
+              muted={true}
+              loop={true}
+              width="100%"
+              height="100%"
+              config={{ youtube: { playerVars: { controls: 0, disablekb: 1, fs: 0, modestbranding: 1, rel: 0 } } }}
+            />
+          </div>
+        </div>
       )}
     </>
   );

@@ -9,6 +9,7 @@ import TransitionLink from '@/components/layout/TransitionLink';
 import { ArrowLeft } from 'lucide-react';
 import ScreenplayTrigger from '@/components/ui/ScreenplayTrigger';
 import PlayVideoButton from '@/components/ui/PlayVideoButton';
+import { resolveProjectMedia } from '@/lib/media';
 
 interface ExpandedGalleryItem {
   mediaType?: string;
@@ -32,17 +33,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     notFound();
   }
 
-  const mainPosterUrl = project.posterUrl || (typeof project.poster === 'string' 
-    ? project.poster 
-    : project.poster ? urlForImage(project.poster)?.url() : '');
-    
-  const isYoutubeLink = (url: string | null) => url && (url.includes('youtube.com') || url.includes('youtu.be'));
-
-  // Ensure background video is only MP4, never a YouTube link
-  const mainVideoUrl = project.videoFileUrl || (project.videoUrl && !isYoutubeLink(project.videoUrl) ? project.videoUrl : null);
-
-  // If a YouTube link was pasted in videoUrl, use it as youtubeUrl
-  const finalYoutubeUrl = project.youtubeUrl || (project.videoUrl && isYoutubeLink(project.videoUrl) ? project.videoUrl : null);
+  const { posterUrl: mainPosterUrl, videoUrl: mainVideoUrl, youtubeUrl: finalYoutubeUrl } = resolveProjectMedia(project);
 
   const finalScriptUrl = project.scriptFileUrl || project.scriptUrl;
 
