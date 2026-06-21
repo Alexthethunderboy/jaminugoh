@@ -1,11 +1,13 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import dynamic from 'next/dynamic';
 
-const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ReactPlayer = dynamic(() => import('react-player'), { ssr: false }) as any;
 
 const YoutubeIcon = ({ size = 18 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -47,9 +49,9 @@ export default function VideoPreviewModal({ isOpen, onClose, videoUrl }: VideoPr
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
-  if (!mounted) return null;
+  if (!mounted || typeof document === 'undefined') return null;
 
-  return (
+  const modalContent = (
     <AnimatePresence>
       {isOpen && (
         <motion.div
@@ -104,4 +106,6 @@ export default function VideoPreviewModal({ isOpen, onClose, videoUrl }: VideoPr
       )}
     </AnimatePresence>
   );
+
+  return createPortal(modalContent, document.body);
 }
