@@ -25,7 +25,6 @@ export default function ClientHeroVideo({ youtubeUrl, videoUrl, posterUrl, title
             loop={true}
             width="100%"
             height="100%"
-            // @ts-expect-error react-player types are slightly outdated
             config={{ youtube: { playerVars: { controls: 0, disablekb: 1, fs: 0, modestbranding: 1, rel: 0, autoplay: 1 } } }}
           />
         </div>
