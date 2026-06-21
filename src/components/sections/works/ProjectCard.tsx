@@ -5,10 +5,7 @@ import { Metadata } from '@/components/ui/typography';
 import { useAppStore } from '@/lib/store';
 import TransitionLink from '@/components/layout/TransitionLink';
 import { resolveProjectMedia } from '@/lib/media';
-import dynamic from 'next/dynamic';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ReactPlayer = dynamic(() => import('react-player'), { ssr: false }) as any;
+import NativeYoutubeEmbed from '@/components/ui/NativeYoutubeEmbed';
 
 interface ProjectCardProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -70,14 +67,12 @@ export default function ProjectCard({
         <div className={`absolute inset-0 w-full h-full transition-opacity duration-500 pointer-events-none overflow-hidden ${isHovered ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}>
           {/* Scale up to hide youtube borders/title */}
           <div className="w-full h-full transform scale-[1.35] md:scale-[1.15]">
-            <ReactPlayer 
+            <NativeYoutubeEmbed 
               url={youtubeUrl}
-              playing={isHovered}
+              autoplay={isHovered}
               muted={true}
               loop={true}
-              width="100%"
-              height="100%"
-              config={{ youtube: { playerVars: { controls: 0, disablekb: 1, fs: 0, modestbranding: 1, rel: 0 } } }}
+              controls={false}
             />
           </div>
         </div>

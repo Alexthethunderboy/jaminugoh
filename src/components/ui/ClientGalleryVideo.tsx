@@ -1,10 +1,7 @@
 'use client';
 
 import React from 'react';
-import dynamic from 'next/dynamic';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ReactPlayer = dynamic(() => import('react-player'), { ssr: false }) as any;
+import NativeYoutubeEmbed from './NativeYoutubeEmbed';
 
 interface ClientGalleryVideoProps {
   videoUrl: string;
@@ -17,12 +14,9 @@ export default function ClientGalleryVideo({ videoUrl, posterUrl }: ClientGaller
   if (isYoutube) {
     return (
       <div className="w-full aspect-video bg-black rounded-sm overflow-hidden">
-        <ReactPlayer 
+        <NativeYoutubeEmbed 
           url={videoUrl}
           controls={true}
-          width="100%"
-          height="100%"
-          light={posterUrl ? posterUrl : true}
         />
       </div>
     );

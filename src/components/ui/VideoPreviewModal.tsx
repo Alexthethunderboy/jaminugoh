@@ -4,10 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
-import dynamic from 'next/dynamic';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ReactPlayer = dynamic(() => import('react-player'), { ssr: false }) as any;
+import NativeYoutubeEmbed from './NativeYoutubeEmbed';
 
 const YoutubeIcon = ({ size = 18 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -92,15 +89,21 @@ export default function VideoPreviewModal({ isOpen, onClose, videoUrl }: VideoPr
             className="relative w-full max-w-6xl aspect-video bg-black rounded-lg shadow-2xl overflow-hidden ring-1 ring-white/10"
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the player
           >
-            <ReactPlayer
-              url={videoUrl}
-              width="100%"
-              height="100%"
-              className="absolute top-0 left-0"
-              playing={isOpen}
-              controls={true}
-              fallback={<div className="w-full h-full flex items-center justify-center text-silver absolute top-0 left-0 bg-black">Loading player...</div>}
-            />
+            {videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be') ? (
+              <NativeYoutubeEmbed 
+                url={videoUrl}
+                autoplay={true}
+                controls={true}
+                className="absolute top-0 left-0"
+              />
+            ) : (
+              <video 
+                src={videoUrl} 
+                autoPlay 
+                controls 
+                className="absolute top-0 left-0 w-full h-full object-contain"
+              />
+            )}
           </motion.div>
         </motion.div>
       )}
