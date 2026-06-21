@@ -98,6 +98,14 @@ export default function HeroStream({ data }: { data: HeroData }) {
     return () => window.removeEventListener('mousemove', handleMouseParallax);
   }, { scope: containerRef });
 
+  React.useEffect(() => {
+    if (finalVideoUrl && videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // Suppress unhandled rejection on fast navigations
+      });
+    }
+  }, [finalVideoUrl]);
+
   const splitText = (text: string) => {
     return text.split('').map((char, index) => (
       <span key={index} className="char inline-block will-change-transform" style={{ transformOrigin: '50% 100%' }}>
@@ -118,7 +126,6 @@ export default function HeroStream({ data }: { data: HeroData }) {
         {finalVideoUrl ? (
           <video
             ref={videoRef}
-            autoPlay
             loop
             muted
             playsInline

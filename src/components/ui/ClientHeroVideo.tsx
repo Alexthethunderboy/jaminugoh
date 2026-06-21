@@ -32,10 +32,20 @@ export default function ClientHeroVideo({ youtubeUrl, videoUrl, posterUrl, title
     );
   }
 
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+
+  React.useEffect(() => {
+    if (videoUrl && videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // Suppress unhandled rejection on fast navigations
+      });
+    }
+  }, [videoUrl]);
+
   if (videoUrl) {
     return (
       <video 
-        autoPlay 
+        ref={videoRef}
         loop 
         muted 
         playsInline
