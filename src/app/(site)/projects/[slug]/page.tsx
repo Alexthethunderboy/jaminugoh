@@ -35,7 +35,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     notFound();
   }
 
-  const { posterUrl: mainPosterUrl, videoUrl: mainVideoUrl, youtubeUrl: finalYoutubeUrl } = resolveProjectMedia(project);
+  const { posterUrl: mainPosterUrl, videoUrl: mainVideoUrl, youtubeUrl: finalYoutubeUrl, trailerVideoUrl, trailerYoutubeUrl } = resolveProjectMedia(project);
 
   const finalScriptUrl = project.scriptFileUrl || project.scriptUrl;
 
@@ -70,7 +70,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <H1 className="text-[10vw] md:text-[6vw] font-display font-bold uppercase leading-[0.9] tracking-tighter mix-blend-difference">
             {project.title}
           </H1>
-          <PlayVideoButton videoUrl={mainVideoUrl || ''} youtubeUrl={finalYoutubeUrl || undefined} />
+          <PlayVideoButton videoUrl={trailerVideoUrl || ''} youtubeUrl={trailerYoutubeUrl || undefined} />
         </div>
       </section>
 

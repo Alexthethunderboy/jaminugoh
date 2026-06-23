@@ -25,7 +25,7 @@ export const heroSectionQuery = groq`
 `
 
 export const projectsQuery = groq`
-  *[_type == "project"] | order(sortOrder asc) {
+  *[_type == "project"] | order(year desc, _createdAt desc) {
     _id,
     title,
     "slug": slug.current,
@@ -34,6 +34,9 @@ export const projectsQuery = groq`
     "videoFileUrl": videoFile.asset->url,
     videoUrl,
     youtubeUrl,
+    "trailerVideoFileUrl": trailerVideoFile.asset->url,
+    trailerVideoUrl,
+    trailerYoutubeUrl,
     poster,
     posterUrl
   }
@@ -50,6 +53,9 @@ export const projectBySlugQuery = groq`
     "videoFileUrl": videoFile.asset->url,
     videoUrl,
     youtubeUrl,
+    "trailerVideoFileUrl": trailerVideoFile.asset->url,
+    trailerVideoUrl,
+    trailerYoutubeUrl,
     poster,
     posterUrl,
     "scriptFileUrl": scriptFile.asset->url,

@@ -1,16 +1,13 @@
 'use client';
 
 import React from 'react';
-import NativeYoutubeEmbed from './NativeYoutubeEmbed';
-
 interface ClientHeroVideoProps {
-  youtubeUrl?: string | null;
   videoUrl?: string | null;
   posterUrl?: string | null;
   title?: string;
 }
 
-export default function ClientHeroVideo({ youtubeUrl, videoUrl, posterUrl, title }: ClientHeroVideoProps) {
+export default function ClientHeroVideo({ videoUrl, posterUrl, title }: ClientHeroVideoProps) {
   const videoRef = React.useRef<HTMLVideoElement>(null);
 
   React.useEffect(() => {
@@ -20,24 +17,6 @@ export default function ClientHeroVideo({ youtubeUrl, videoUrl, posterUrl, title
       });
     }
   }, [videoUrl]);
-
-  if (youtubeUrl) {
-    return (
-      <div className="absolute inset-0 overflow-hidden w-full h-full opacity-60">
-        <div className="w-full h-full transform scale-[1.35] md:scale-[1.15] pointer-events-none">
-          <NativeYoutubeEmbed 
-            url={youtubeUrl}
-            autoplay={true}
-            muted={true}
-            loop={true}
-            controls={false}
-          />
-        </div>
-      </div>
-    );
-  }
-
-
   if (videoUrl) {
     return (
       <video 

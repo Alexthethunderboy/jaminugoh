@@ -88,9 +88,9 @@ export default function FloatingNav({ data }: { data?: GlobalSettingsData }) {
   return (
     <nav className="fixed bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] animate-in slide-in-from-bottom-8 duration-1000 delay-500 fill-mode-both w-[98vw] max-w-[95vw] md:w-[max-content]">
       <div className="flex items-center justify-between md:justify-center max-[360px]:gap-0 gap-0.5 md:gap-2 max-[360px]:p-0.5 p-1 md:p-2 bg-charcoal/40 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl mx-auto w-full md:w-auto overflow-x-auto no-scrollbar">
-        {displaySocials.map((social) => (
+        {displaySocials.map((social, index) => (
           <a
-            key={social.name}
+            key={`${social.name}-${index}`}
             href={social.href}
             target="_blank"
             rel="noopener noreferrer"

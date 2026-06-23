@@ -56,6 +56,25 @@ export const project = defineType({
       description: 'Upload an mp4 video file directly.',
     }),
     defineField({
+      name: 'trailerVideoUrl',
+      title: 'Trailer Video URL (mp4)',
+      type: 'url',
+      description: 'A direct link to an mp4 trailer video file.',
+    }),
+    defineField({
+      name: 'trailerYoutubeUrl',
+      title: 'Trailer YouTube URL',
+      type: 'url',
+      description: 'A direct link to a YouTube trailer video.',
+    }),
+    defineField({
+      name: 'trailerVideoFile',
+      title: 'Trailer Video File',
+      type: 'file',
+      options: { accept: 'video/*' },
+      description: 'Upload an mp4 trailer video file directly.',
+    }),
+    defineField({
       name: 'poster',
       title: 'Poster Image',
       type: 'image',
@@ -90,9 +109,9 @@ export const project = defineType({
     }),
     defineField({
       name: 'expandedGallery',
-      title: 'Expanded Gallery',
+      title: 'Gallery & Behind the Scenes',
       type: 'array',
-      description: 'Additional images or videos to display on the project detail page.',
+      description: 'Additional images or videos to display on the project detail page. Great for behind the scenes content!',
       of: [
         {
           type: 'object',

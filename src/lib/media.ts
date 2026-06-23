@@ -14,5 +14,8 @@ export function resolveProjectMedia(project: any) {
   // If a YouTube link was pasted in videoUrl, use it as youtubeUrl
   const youtubeUrl = project.youtubeUrl || (project.videoUrl && isYoutubeLink(project.videoUrl) ? project.videoUrl : null);
 
-  return { posterUrl, videoUrl, youtubeUrl };
+  const trailerVideoUrl = project.trailerVideoFileUrl || (project.trailerVideoUrl && !isYoutubeLink(project.trailerVideoUrl) ? project.trailerVideoUrl : null);
+  const trailerYoutubeUrl = project.trailerYoutubeUrl || (project.trailerVideoUrl && isYoutubeLink(project.trailerVideoUrl) ? project.trailerVideoUrl : null);
+
+  return { posterUrl, videoUrl, youtubeUrl, trailerVideoUrl, trailerYoutubeUrl };
 }

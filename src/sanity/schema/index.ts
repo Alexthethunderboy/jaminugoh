@@ -5,7 +5,8 @@ import { heroSection } from './documents/heroSection'
 import { project } from './documents/project'
 import { screenplay } from './documents/screenplay'
 import { audioTrack } from './documents/audioTrack'
+import { subscriber } from './documents/subscriber'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [globalSettings, heroSection, project, screenplay, audioTrack],
+  types: [globalSettings, heroSection, project, screenplay, audioTrack, subscriber],
 }

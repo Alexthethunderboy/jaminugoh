@@ -150,13 +150,13 @@ export default function HeroStream({ data }: { data: HeroData }) {
       <div className="relative z-20 flex flex-col items-center pointer-events-none text-center px-4 w-full -mt-[12px]">
         <H1 
           ref={titleRef} 
-          className="text-[12vw] text-center mix-blend-difference text-silver drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]" 
+          className="text-[12vw] text-center text-silver drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] [text-shadow:0_4px_24px_rgba(0,0,0,0.5),_0_0_2px_rgba(0,0,0,1)]" 
           style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
         >
           {splitText(data.title)}
         </H1>
         
-        <div ref={metadataRef} className="-mt-2 md:-mt-6 flex flex-wrap justify-center gap-4 md:gap-8 opacity-0">
+        <div ref={metadataRef} className="-mt-2 md:-mt-6 flex flex-wrap justify-center gap-4 md:gap-8 opacity-0 [text-shadow:0_1px_3px_rgba(0,0,0,0.8),_0_0_1px_rgba(0,0,0,1)]">
           {data.roles?.map((role, idx) => (
             <React.Fragment key={idx}>
               <Metadata>{role}</Metadata>

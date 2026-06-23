@@ -30,7 +30,7 @@ export default function PlayVideoButton({ videoUrl, youtubeUrl }: PlayVideoButto
         <span className="flex items-center justify-center w-10 h-10 rounded-full bg-white text-charcoal group-hover:scale-110 transition-transform duration-300">
           <Play size={18} className="ml-1" fill="currentColor" />
         </span>
-        <span className="text-sm font-medium tracking-widest uppercase">Watch Preview</span>
+        <span className="text-sm font-medium tracking-widest uppercase">Watch Trailer</span>
       </motion.button>
 
       <VideoPreviewModal 
